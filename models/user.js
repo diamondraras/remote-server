@@ -3,8 +3,8 @@ var bcrypt = require('bcryptjs');
 
 // User Schema
 var UserSchema = mongoose.Schema({
-	socket: {
-		type: Object
+	home_url: {
+		type: String
 	},
 	password: {
 		type: String
@@ -12,6 +12,9 @@ var UserSchema = mongoose.Schema({
 	email: {
 		type: String,
 		index: true
+	},
+	verified : {
+		type : Boolean
 	},
 	name: {
 		type: String
@@ -21,6 +24,15 @@ var UserSchema = mongoose.Schema({
 	},
 	numbers: {
 		type: Object
+	},
+	address : {
+		type : String
+	},
+	province : {
+		type : String
+	},
+	randomstring : {
+		type : String
 	}
 });
 
@@ -46,7 +58,7 @@ module.exports.updateUser = function (newUser, callback) {
 
 module.exports.getUserByEmail = function (email, callback) {
 	var query = {
-		email: email
+		email
 	};
 	User.findOne(query, callback);
 }

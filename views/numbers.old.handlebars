@@ -1,0 +1,35 @@
+<a href="/users/logout">Deconnexion</a>
+<pre>
+Home
+{{#each home_numbers}}
+<form action="/numbers/removeOne" method="post">
+name : {{name}}
+num : {{num}}
+<input type="submit" value="delete">
+<input type="hidden" name="home" value="{{num}}">
+</form>
+{{/each}}
+
+
+Neighbours
+{{#each neighbours_numbers}}
+<form action="/numbers/removeOne" method="post">
+name : {{name}}
+num : {{num}}
+<input type="submit" value="delete">
+<input type="hidden" name="neighbours" value="{{num}}">
+</form>
+{{/each}}
+</pre>
+{{#if error_msg}}
+{{error_msg}}
+{{/if}}
+<form action="/numbers/addNumber" method="POST">
+<select name="type" id="">
+    <option value="neighbours">Voisin</option>
+    <option value="home">Domicile</option>
+</select>
+<input type="text" name="name" placeholder="Nom">
+<input type="text" name="num" placeholder="Numéro">
+<button type="submit">Submit</button>
+</form>

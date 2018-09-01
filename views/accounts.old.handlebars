@@ -1,0 +1,24 @@
+<a href="/users/logout">Deconnexion</a>
+<pre>
+{{#each accounts}}
+<form action="/accounts/removeOne" method="post">
+link : {{link}}
+senderId : {{senderId}}
+added_at : {{ added_at }}
+<input type="submit" value="delete">
+<input type="hidden" name="senderId" value="{{senderId}}">
+</form>
+{{/each}}
+</pre>
+{{#if error_msg}}
+{{error_msg}}
+{{/if}}
+
+{{#each errors}}
+{{msg}}
+{{/each}}
+<form action="/accounts/add" method="POST">
+<input type="text" name="link" placeholder="link">
+<input type="text" name="senderId" placeholder="senderID" {{#if new_senderId}} value ={{ new_senderId }} {{/if}}>
+<button type="submit">Submit</button>
+</form>

@@ -2,8 +2,9 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
+var randomstring = require('randomstring')
 var User = require('../models/user');
+var ensureAuthenticated = require('../config/ensureAuthetificated')
 
 // Register
 router.get('/register', function(req, res){
@@ -47,12 +48,14 @@ router.post('/register', function(req, res){
 		var newUser = new User({
 			password:password,
 			email: email,
+			verified: false,
 			name : name,
 			accounts : [],
 			numbers : {
 				home : [],
 				neighbours : []
-			}
+			},
+			randomstring : randomstring.generate(30)
 
 		});
 
@@ -64,9 +67,9 @@ router.post('/register', function(req, res){
 			}else{
 				User.createUser(newUser, function(err, user){
 					if(err) throw err;
-					console.log(user);
-					req.flash('success_msg', 'Vous êtes inscrit et pouvez maintenant vous connecter');
+					req.flash('success_msg', 'Vous êtes inscrit ! Vérifier votre mail pour connecter');
 					res.redirect('/users/login');
+					console.log("/users/activate/"+user._id+"/"+user.randomstring)
 				});
 			}
 		})
@@ -74,50 +77,89 @@ router.post('/register', function(req, res){
 });
 
 passport.use(new LocalStrategy(
-  function(email, password, done) {
-   User.getUserByEmail(email, function(err, user){
-   	if(err) throw err;
-   	if(!user){
-   		return done(null, false, {message: 'Utilisateur non inscrit !'});
-   	}
-
-   	User.comparePassword(password, user.password, function(err, isMatch){
-   		if(err) throw err;
+	function(email, password, done) {
+		User.getUserByEmail(email, function(err, user){
+			if(err) throw err;
+			if(!user){
+				return done(null, false, {message: 'Utilisateur non inscrit !'});
+			}
+			
+			User.comparePassword(password, user.password, function(err, isMatch){
+				if(err) throw err;
    		if(isMatch){
-				// req.session.user = "test"
+			   // req.session.user = "test"
    			return done(null, user);
-   		} else {
-   			return done(null, false, {message: 'Mot de passe incorrecte !'});
+		} else {
+			return done(null, false, {message: 'Mot de passe incorrecte !'});
    		}
-   	});
-   });
-  }));
+	});
+});
+}));
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+	done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
   User.getUserById(id, function(err, user) {
-    done(err, user);
-  });
+	  done(err, user);
+	});
 });
 
 router.post('/login',
-  passport.authenticate('local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true}),
-  function(req, res) {
-		console.log("never here")
-		// req.session.user = "user"
-		// console.log("user")
-    // res.redirect('/');
-  });
+passport.authenticate('local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true}),
+function(req, res) {
+});
 
 router.get('/logout', function(req, res){
 	req.logout();
-
+	
 	req.flash('success_msg', 'Vous avez été déconnecté');
-
+	
 	res.redirect('/users/login');
 });
 
+router.post('/update',ensureAuthenticated,function(req,res){
+	User.getUserById(req.session.passport.user,function (err , user) {
+		if (user.email != req.body.email) {
+			user.verified = false;
+			user.email = req.body.email
+			user.randomstring = randomstring.generate(30)
+			console.log("/users/activate/"+user._id+"/"+user.randomstring)
+		}
+		user.address = req.body.address
+		user.name = req.body.name
+		user.province = req.body.province
+		User.updateUser(user, function(err, foo){
+			if(err) throw err;
+			else{
+				res.json({
+					ok : true
+				})
+			}
+		})
+	})
+})
+
+router.get('/activate/:id/:randomstring',function(req,res){
+	User.getUserById(req.params.id, function(err, user){
+		if (user && !err) {
+			if (req.params.randomstring == user.randomstring) {
+				user.verified = true;
+				User.updateUser(user, function(err, updated_user,a){
+					req.flash('success_msg', "L'adresse e-mail "+user.email+" a été vérifiée vous pouvez maintenant vous connecter");
+					res.redirect('/users/login');
+				})
+			}else{
+				req.flash('error_msg', "URL d'activation invalide")
+				req.session.last_route = undefined;
+				res.redirect('/users/login');
+			}
+		}else{
+			req.flash('error_msg', "URL d'activation invalide")
+			req.session.last_route = undefined;
+			res.redirect('/users/login');
+		}
+	})
+})
 module.exports = router;

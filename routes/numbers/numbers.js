@@ -4,7 +4,7 @@ var ensureAuthenticated = require('../../config/ensureAuthetificated')
 var User = require('../../models/user');
 var verifyIfExistingNumber = require('./verifyIfExistingNumber')
 router.get('/', ensureAuthenticated, function (req, res) {
-	req.session.last_route = req.route.path
+	req.session.last_route = undefined
 	User.getUserById(req.session.passport.user, function (err, user) {
 
 		res.render('numbers', {
@@ -17,40 +17,50 @@ router.get('/', ensureAuthenticated, function (req, res) {
 	})
 });
 
-router.post('/addNumber', ensureAuthenticated, function (req, res) {
+router.post('/add', ensureAuthenticated, function (req, res) {
+
+	req.checkBody('num', 'Un numéro téléphone est requis').notEmpty();
+	req.checkBody('name', 'Le nom de la personne est requis').notEmpty();
+	var errors = req.validationErrors();
+
 
 	User.getUserById(req.session.passport.user, function (err, user) {
-
-		if (verifyIfExistingNumber(user,req.body.num,req.body.type)) {
-			req.flash('error_msg', "Ce numéro a déjà été ajouté dans la catégorie "+((req.body.type=='home')?'domicile':"voisin"))
+		if(errors){
+			req.flash('error_msg', "Veuillez remplir tous les champs !")
+			res.redirect("/numbers")
 		}else{
-			switch (req.body.type) {
-				case "neighbours":
-					user.numbers.neighbours.push({
-						name: req.body.name,
-						num: req.body.num
-					})
-					break;
-				case "home":
-					user.numbers.home.push({
-						name: req.body.name,
-						num: req.body.num
-					})
-					break;
-			}
-			User.updateUser(user, function (err, updated_user) {
-				if (err) throw err
-				else{
-					res.redirect('/numbers')
+			if (verifyIfExistingNumber(user,req.body.num,req.body.type)) {
+				req.flash('error_msg', "Ce numéro a déjà été ajouté dans la catégorie "+((req.body.type=='home')?'domicile':"voisin"))
+				res.redirect('/numbers')
+			}else{
+				switch (req.body.type) {
+					case "neighbours":
+						user.numbers.neighbours.push({
+							name: req.body.name,
+							num: req.body.num
+						})
+						break;
+					case "home":
+						user.numbers.home.push({
+							name: req.body.name,
+							num: req.body.num
+						})
+						break;
 				}
-			})
+				User.updateUser(user, function (err, updated_user) {
+					if (err) throw err
+					else{
+						res.redirect('/numbers')
+					}
+				})
+			}
 		}
+
 	})
 });
 
 router.post('/removeOne', ensureAuthenticated, function (req, res) {
 	if (req.body.neighbours) {
-		console.log("neighbours")
 		User.getUserById(req.session.passport.user, function (err, user) {
 			var removedOne = []
 			for (let index = 0; index < user.numbers.neighbours.length; index++) {
@@ -62,10 +72,12 @@ router.post('/removeOne', ensureAuthenticated, function (req, res) {
 			user.numbers.neighbours = removedOne
 			User.updateUser(user, function (err, updated_user) {
 				if (err) throw err;
+				else{
+					res.redirect('/numbers')
+				}
 			})
 		})
 	} else if(req.body.home){
-		console.log("home")
 		User.getUserById(req.session.passport.user, function (err, user) {
 			var removedOne = []
 			for (let index = 0; index < user.numbers.home.length; index++) {

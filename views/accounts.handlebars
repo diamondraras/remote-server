@@ -1,19 +1,245 @@
-<a href="/users/logout">Deconnexion</a>
-<pre>
-{{#each accounts}}
-<form action="/accounts/removeOne" method="post">
-link : {{link}}
-senderId : {{senderId}}
-<input type="submit" value="delete">
-<input type="hidden" name="senderId" value="{{senderId}}">
-</form>
-{{/each}}
-</pre>
-{{#if error_msg}}
-{{error_msg}}
-{{/if}}
-<form action="/accounts/addAccount" method="POST">
-<input type="text" name="link" placeholder="link">
-<input type="text" name="senderId" placeholder="senderID">
-<button type="submit">Submit</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Smart Minds | Admin</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="/vendors/css/vendor.bundle.addons.css">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="/images/favicon.png" />
+</head>
+
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+        <a class="navbar-brand brand-logo" href="/">
+          <img src="/images/logo.svg" alt="logo" />
+        </a>
+        <a class="navbar-brand brand-logo-mini" href="/">
+          <img src="/images/logo-mini.png" alt="logo" />
+        </a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center">
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item dropdown d-none d-xl-inline-block">
+            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+              <span class="profile-text">Bonjour, {{ name }} !</span>
+              <img class="img-xs rounded-circle" src="/images/faces/face1.jpg" alt="Profile image">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+              <a class="dropdown-item mt-2" href="#">
+                <i class="mdi mdi-account-settings-variant "></i>
+                Gérer les comptes
+              </a>
+              <a class="dropdown-item" href="users/logout">
+                <i class="mdi mdi-login-variant "></i>
+                Se déconnecter
+              </a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item nav-profile">
+            <div class="nav-link">
+              <div class="user-wrapper">
+                <div class="profile-image">
+                  <img src="/images/faces/face1.jpg" alt="profile image">
+                </div>
+                <div class="text-wrapper">
+                  <p class="profile-name">{{ name }}</p>
+                  <div>
+                    <small class="designation text-muted">En ligne</small>
+                    <span class="status-indicator online"></span>
+                  </div>
+                </div>
+              </div>
+              <a class="btn btn-primary btn-block" href="users/logout">Se déconnecter
+                <i class="mdi mdi-login-variant"></i>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/">
+              <i class="menu-icon mdi mdi-home"></i>
+              <span class="menu-title">Ma Maison</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/accounts">
+              <i class="menu-icon mdi mdi-facebook-messenger"></i>
+              <span class="menu-title">Comptes Facebook</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/numbers">
+              <i class="menu-icon mdi mdi-phone"></i>
+              <span class="menu-title">Numéros Téléphone</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-md-8 col-lg-6 d-flex align-items-stretch grid-margin">
+              <div class="row flex-grow">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Ajouter un compte Facebook</h4>
+                      <p class="text-muted">
+                        Veuillez entrer les informations suivantes :
+                      </p>
+                      <form class="forms-sample" action="/accounts/add" method="POST">
+                        <div class="form-group">
+                          <label for="inputID">Lien Profil Facebook</label>
+                          <input type="text" name="link" class="form-control" placeholder="Ex : www.facebook.com/smartminds">
+                        </div>
+                        <div class="form-group">
+                          <label for="inputPassword">SendID du compte (cliquer <a href="facebook.com">ici</a> pour en savoir
+                            plus) </label>
+                          <input type="text" name="senderId" class="form-control" id="text" placeholder="Ex : 0123456789" {{#if new_senderId}} value ={{ new_senderId }} {{/if}}>
+                        </div>
+                        {{#if error_msg}}
+                        <p class="text-danger">{{error_msg}}</p>
+                        {{/if}}
+                        <button type="submit" class="btn btn-primary mr-2">Ajouter</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-11 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Liste des comptes connectés</h4>
+                  <p class="card-description">
+                    Voici la liste des comptes Facebook déjà connectés :
+                  </p>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>
+                            Lien Profil
+                          </th>
+                          <th>
+                            SenderID
+                          </th>
+                          <th>
+                            Date d'ajout
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each accounts}}
+                        <tr>
+                          <td class="">
+                            <a href="{{link}}">{{link}}</a>
+                          </td>
+                          <td>
+                            {{senderId}}
+                          </td>
+                          <td>
+                            <div>
+                              {{ added_at }}
+                            </div>
+                          </td>
+                          <td>
+                            <div>
+                              <form action="/accounts/removeOne" method="post">
+                                <button type="button" data-toggle="modal" href="#{{ @index }}" class="btn btn-link" style="color : red;"><i
+                                    class="mdi mdi-delete"></i></button>
+                                <input type="hidden" name="senderId" value="{{senderId}}">
+                                <div class="modal" id="{{ @index }}">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">x</button>
+
+                                      </div>
+                                      <div class="modal-body">
+                                        <p class="h5">Supprimer ce compte Facebook?</p><br><br>
+                                        <span>Lien Facebook</span> : <a href="{{link}}">{{link}}</a> <br><br>
+                                        <span>SenderId</span> : <span>{{ senderId }}</span>
+
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+
+
+
+                          </td>
+                        </tr>
+                        {{/each}}
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer">
+            <div class="container-fluid clearfix">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018 SmartMinds. All
+                rights reserved.</span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+
+    <!-- plugins:js -->
+    <script src="/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="/js/off-canvas.js"></script>
+    <script src="/js/misc.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="/js/dashboard.js"></script>
+    <!-- End custom js for this page-->
+</body>
+
+</html>

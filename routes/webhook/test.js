@@ -12,9 +12,7 @@ router.get('/',function (req, res) {
 router.post('/', function(req, res){
     var message = req.body.message;
     var senderId = req.body.senderId;
-    // console.log(message, senderId)
     User.find({},function(err,results){
-        // console.log(results)
         var users = []
         for (let i = 0; i < results.length; i++) {
             const a = results[i];

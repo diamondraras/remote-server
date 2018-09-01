@@ -3,7 +3,6 @@ function Quick_replies_class() {
 
   this.add_text_without_image = function (title, payload) {
     var json = {}
-    // console.log(payload)
     json['content_type'] = 'text'
     json['title'] = title
     json['payload'] = "<DEVELOPER_DEFINED_PAYLOAD>"

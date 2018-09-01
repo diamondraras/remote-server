@@ -1,9 +1,409 @@
-<a href="/users/logout">Deconnexion</a>
-<pre>
-email : {{email}}
-name : {{name}}
-synchronized : {{synchronized}}
-nb of accounts : {{nb_accounts}}
-nb of numbers : {{nb_numbers}}
+<!DOCTYPE html>
+<html lang="en">
 
-</pre>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Smart Minds | Admin</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="/vendors/css/vendor.bundle.addons.css">
+  {{!-- <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.min.css"> --}}
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/animation.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="/images/favicon.png" />
+</head>
+
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      
+      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+        <a class="navbar-brand brand-logo" href="/">
+          <img src="/images/logo.svg" alt="logo" />
+        </a>
+        <a class="navbar-brand brand-logo-mini" href="/">
+          <img src="/images/logo-mini.png" alt="logo" />
+        </a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center">
+        
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item dropdown d-none d-xl-inline-block">
+            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+              <span class="profile-text">Bonjour, {{name}} !</span>
+              <img class="img-xs rounded-circle" src="/images/faces/face1.jpg" alt="Profile image">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+              <a class="dropdown-item mt-2" href="#">
+                <i class="mdi mdi-account-settings-variant "></i>
+                Gérer les comptes
+              </a>
+              <a class="dropdown-item" href="/users/logout">
+                <i class="mdi mdi-login-variant "></i>
+                Se déconnecter
+              </a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item nav-profile">
+            <div class="nav-link">
+              <div class="user-wrapper">
+                <div class="profile-image">
+                  <img src="/images/faces/face1.jpg" alt="profile image">
+                </div>
+                <div class="text-wrapper">
+                  <p class="profile-name">{{name}}</p>
+                  <div>
+                    <small class="designation text-muted">En ligne</small>
+                    <span class="status-indicator online"></span>
+                  </div>
+                </div>
+              </div>
+              <a class="btn btn-primary btn-block" href="/users/logout">Se déconnecter
+                <i class="mdi mdi-login-variant"></i>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/">
+              <i class="menu-icon mdi mdi-home"></i>
+              <span class="menu-title">Ma Maison</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/accounts">
+              <i class="menu-icon mdi mdi-facebook-messenger"></i>
+              <span class="menu-title">Comptes Facebook</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/numbers">
+              <i class="menu-icon mdi mdi-phone"></i>
+              <span class="menu-title">Numéros Téléphone</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+
+
+
+      <div class="main-panel" id="app">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-raspberrypi text-primary icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Etat du Raspberry Pi</p>
+                      <div class="fluid-container">
+                        <h3 class="font-weight-medium text-right mb-0 text-success"> <i class="mdi mdi-check"></i>Connecté</h3>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                    <i class="mdi mdi-link mr-1" aria-hidden="true"></i> <a href="#">https://ceci.est.un.lien</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-home-account text-warning icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Numéros Pour Notifications</p>
+                      <div class="fluid-container">
+                        <h3 class="font-weight-medium text-right mb-0">{{ nb_home_numbers }}</h3>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                    <i class="mdi mdi-phone mr-1" aria-hidden="true"></i> Numéros catégorie Domicile
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-alert-outline text-danger icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Numéros en cas d'Alertes</p>
+                      <div class="fluid-container">
+                        <h3 class="font-weight-medium text-right mb-0">{{ nb_alerts_numbers}}</h3>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                    <i class="mdi mdi-phone mr-1" aria-hidden="true"></i> Numéros catégorie Voisin et Domicile
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-facebook-box text-primary icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Comptes Facebook</p>
+                      <div class="fluid-container">
+                        <h3 class="font-weight-medium text-right mb-0">{{nb_accounts}}</h3>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                    <i class="mdi mdi-facebook mr-1" aria-hidden="true"></i>Page <a href="/www.facebook.com/smartminds">SmartMinds</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md- col-sm-12 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body">
+                    <div class="clearfix  border-bottom pb-3 mb-3">
+                        <div class="float-left">
+                          <img class="img-lg rounded-circle" src="/images/faces/face1.jpg" alt="Profile image">
+                        </div>
+                        <div class="float-right">
+                            <button v-if="!editor_mode" type="button" class="btn btn-outline-primary btn-rounded btn-fw" @click="editor_mode = !editor_mode"><i class="mdi mdi-tooltip-edit"></i>Modifier</button>
+                            <button v-if="editor_mode" type="button" class="btn btn-outline-primary btn-rounded btn-fw" @click="save()"><i class="mdi mdi-content-save"></i>Sauvegarder</button>
+                        </div>
+                      </div>
+                  <transition name="slideLeft">
+                      <editor v-show="editor_mode"></editor>
+                  </transition>
+                  <transition name="slideRight">
+                    <profil v-show="!editor_mode"></profil>
+                  </transition>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md- col-sm-12 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body">
+                  <h6>Informations</h6>
+                  <ul class="list-arrow">
+                    <li>Le lien du tableau de bord de la maison est accessible une fois le Raspberry Pi est connecté
+                      (il suffit de se connecter avec votre compte locale)</li>
+                    <li>Les notifications seront envoyés aux numéros domiciles</li>
+                    <li>En cas d'alertes, tous les voisins et les numéros domiciles seront alertés par SMS</li>
+                    <li>Le "senderID" de votre compte facebook est récupérable en envoyant un message à la page <a href="#">SmartMinds</a>
+                      (le lien redirige automatiquement à l'ajout du compte une fois connecté)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="container-fluid clearfix">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018 SmartMinds.
+              All rights reserved.</span>
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <!-- plugins:js -->
+  <script src="/js/jquery-3.3.1.min.js"></script>
+  <script src="/vendors/js/vendor.bundle.base.js"></script>
+  <script src="/vendors/js/vendor.bundle.addons.js"></script>
+  <script src="/js/vue.min.js"></script>
+  <script src="/js/vue-resource.min.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="/js/off-canvas.js"></script>
+  <script src="/js/misc.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="/js/dashboard.js"></script>
+  <!-- <script src="/js/myScript.js"></script> -->
+  <script>
+
+
+
+var editor = {
+  template : `
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Nom Complet</label>
+      
+      <div class="input-group">
+        <div class="input-group-prepend bg-primary">
+          <span class="input-group-text bg-transparent">
+            <i class="mdi mdi-account-circle text-white"></i>
+          </span>
+        </div>
+        <input type="text" class="form-control" placeholder="Nom Complet" id="name" aria-label="Nom Complet"
+          aria-describedby="colored-addon1" value = {{ name }}>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="exampleInputEmail1">Adresse</label>
+      <div class="input-group">
+        <div class="input-group-prepend bg-primary">
+          <span class="input-group-text bg-transparent">
+            <i class="mdi mdi-account-location text-white"></i>
+          </span>
+        </div>
+        <input type="text" id="address" class="form-control" placeholder="Adresse" aria-label="Adresse"
+          aria-describedby="colored-addon1" value="{{ address }}">
+      </div>
+    </div>
+
+
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="exampleInputEmail1">E-mail</label>
+      <div class="input-group">
+        <div class="input-group-prepend bg-primary">
+          <span class="input-group-text bg-transparent">
+            <i class="mdi mdi-email text-white"></i>
+          </span>
+        </div>
+        <input type="text" id="email" class="form-control" placeholder="Entrer l'email" aria-label="Entrer l'email"
+          aria-describedby="colored-addon1" value = {{email}}>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="exampleInputEmail1">Province</label>
+      <select class="form-control" id="province">
+        <option>Antananarivo</option>
+        <option>Antsiranana</option>
+        <option>Mahajanga</option>
+        <option>Toliara</option>
+        <option>Toamasina</option>
+        <option>Fianarantsoa</option>
+      </select>
+    </div>
+  </div>
+</div>
+</div>`
+}
+
+    var profil = {
+      template: `<div>
+
+  <br/>
+  <div class="row">
+    <div class="col-md-6">
+      <address>
+        <p class="font-weight-bold">{{name}}</p>
+        <br/>
+        <p>
+          {{ address }}
+          </p>
+          <p>
+            {{ province }}
+            </p>
+            </address>
+            </div>
+            <div class="col-md-6">
+              <br/>
+        <address class="text-primary">
+          <p class="font-weight-bold">
+            E-mail
+        </p>
+        <p class="mb-2">
+          {{email}}
+          </p>
+          </address>
+          </div>
+          </div>
+          <br/>
+    </div>`
+    }
+    
+    Vue.use(VueResource)
+    new Vue({
+      el: '#app',
+    data: {
+      editor_mode: false
+    },
+    components : { profil , editor},
+    methods : {
+        change_editor_mode(){
+          this.editor_mode = !this.editor_mode
+        },
+        save(){
+            var province = document.getElementById('province').value
+            var name = document.getElementById('name').value
+            var email = document.getElementById('email').value
+            var address = document.getElementById('address').value
+            //alert(document.location.href)
+            var data = {
+                name : name,
+                email : email,
+                address : address,
+                province : province
+            }
+            this.$http.post(document.location.href+"users/update",data)
+                .then((response) =>{
+                    if(response.data.ok){
+                        window.location.reload()
+                    }
+                })
+        }
+    },
+    mounted() {
+    }
+  })
+  </script>
+
+  <!-- End custom js for this page-->
+</body>
+
+</html>

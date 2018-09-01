@@ -1,0 +1,34 @@
+.slideRight-enter-active{
+    animation : slideIn 1.5s;
+    /* position: absolute; */
+    /* left: 0;
+    top: 0; */
+}
+.slideLeft-enter-active{
+    animation : slideOut 1.5s;
+    /* position: absolute; */
+    /* left: 0;
+    top: 0; */
+}
+
+@keyframes slideIn{
+    from{
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut{
+    from{
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

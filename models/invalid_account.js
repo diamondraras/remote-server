@@ -13,7 +13,7 @@ function invalid_account(senderID,link) {
           "image_url": "https://picsum.photos/200/300/?random",
           "buttons": [{
             "type": "web_url",
-            "url": link,
+            "url": link+"/accounts/add/"+senderID,
             "title": "Ajouter votre compte ici !"
           }],
         }]

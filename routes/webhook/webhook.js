@@ -46,7 +46,6 @@ router.post('/', function (req, res) {
                 }
                 if (user) {
                     if (event.message.quick_reply && event.message.quick_reply.payload) {
-                        console.log(event)
                         switch (event.message.quick_reply.payload) {
                             case "Lumière":
                                 messageData = message_data_qr(qr_cmd, "Lumière séléctionné.\nSelectionner une autre commande")

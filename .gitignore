@@ -6,3 +6,6 @@ views/login.mety.handlebars
 views/register.disable.handlebars
 views/test.handlebars
 views/layouts/layout.disable.handlebars
+view/numbers.old.handlebars
+view/accounts.old.handlebars
+view/index.old.handlebars

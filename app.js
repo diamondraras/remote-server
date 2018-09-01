@@ -7,10 +7,11 @@ var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var mongo = require('mongodb');
+// var LocalStrategy = require('passport-local').Strategy;
+// var mongo = require('mongodb');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/smartminds');
+// mongoose.connect('mongodb://localhost/smartminds');
+mongoose.connect("mongodb://smartminds:Sm4rt.M!nds@ds231589.mlab.com:31589/smartminds");
 var db = mongoose.connection;
 
 var routes = require('./routes/index');
