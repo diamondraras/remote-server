@@ -6,7 +6,7 @@ var randomstring = require('randomstring')
 var User = require('../models/user');
 var ensureAuthenticated = require('../config/ensureAuthetificated')
 var sendmail = require('../config/sendmail')
-var url = "https://www.smart-minds.herokuapp.com"
+var url = "smart-minds.herokuapp.com"
 // Register
 router.get('/register', function (req, res) {
 	if (req.isAuthenticated()) {
