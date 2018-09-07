@@ -11,6 +11,7 @@ router.get('/', ensureAuthenticated, function (req, res) {
 		res.render('index', {
 			name: user.name,
 			email: user.email,
+			home_url : user.home_url,
 			synchronized: user.socket != null,
 			nb_accounts: user.accounts ? user.accounts.length : 0,
 			nb_home_numbers: user.numbers.home.length,
